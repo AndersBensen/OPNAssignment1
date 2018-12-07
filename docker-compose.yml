@@ -1,0 +1,25 @@
+version: '3.3'
+
+services:
+   db:
+     build: ./sql
+     image: andersbo/db_container
+     ports:
+      - 3306:3306
+
+   backend:
+     depends_on:
+       - db
+     build: ./backend
+     image: andersbo/backend_container
+     ports:
+       - 3300:3300
+
+   lb1:
+     depends_on:
+       - backend
+       - db
+     build: ./web
+     image: andersbo/web_container
+     ports:
+       - 443:443
